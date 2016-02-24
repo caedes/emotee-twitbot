@@ -1,6 +1,8 @@
 require 'twitter'
 require 'emotee'
 
+$stdout.sync = true
+
 client = Twitter::REST::Client.new do |config|
   config.consumer_key = ENV['TWITTER_CONSUMER_KEY']
   config.consumer_secret = ENV['TWITTER_CONSUMER_SECRET']
@@ -9,7 +11,9 @@ client = Twitter::REST::Client.new do |config|
 end
 
 loop do
-  client.update Emotee.generate
+  emotee = Emotee.generate
+  client.update emotee
+  puts "Emotee tweeted: #{emotee}"
 
   sleep ENV['TWITTER_DELAY'].to_i
 end
